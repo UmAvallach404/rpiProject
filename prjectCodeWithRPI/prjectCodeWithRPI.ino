@@ -1,5 +1,4 @@
 
-int analogPin = A0; //arduino pin baglanti yeri
 String inputCommand = "";
 boolean isStringComplete = false;
 int inputValue = 0; // to store the readen value
@@ -29,13 +28,7 @@ void setup() {
     Serial.begin(9600);
 }
 
-  while (Serial.available()<=0){
-    sendStatus();
-    delay(500);
-  }
-
-
-
+ 
 
 void loop() {
     //if some date is sent, reads it and saves in state
@@ -111,12 +104,7 @@ void loop() {
     //Serial.println(state);
 }
 
-void sendStatus(){
-  char buffer[50];
-  inputValue = analogRead(analogPin);
-  sprintf(buffer, "Analog input %d is %d", analogPin, inputValue);
-  Serial.println(buffer);
-}
+
 
 void serialEvent(){
   while(Serial.available()){
