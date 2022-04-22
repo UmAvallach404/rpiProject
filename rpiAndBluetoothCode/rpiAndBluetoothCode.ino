@@ -10,6 +10,7 @@ int stateStop=0;
 String command;
 
 void setup() {
+    Serial.begin(9600);
     // sets the pins as outputs:
     pinMode(motor1Pin1, OUTPUT);
     pinMode(motor1Pin2, OUTPUT);
@@ -21,7 +22,8 @@ void setup() {
     digitalWrite(enable1Pin, HIGH);
     digitalWrite(enable2Pin, HIGH);
     // initialize serial communication at 9600 bits per second:
-    Serial.begin(9600);
+    Serial.println("Type command(5(forward), 2(bakcward), 3(right), 1(right)")
+
 }
 
 void loop() {
@@ -33,7 +35,7 @@ void loop() {
       flag=0;
     }   
     // if the state is 'F' the DC motor will go forward
-    if (state == 'F' || command.equeals("forward")) {
+    if (state == 'F' || command.equals("forward")) {
         digitalWrite(motor1Pin1, HIGH);
         digitalWrite(motor1Pin2, LOW); 
         digitalWrite(motor2Pin1, LOW);
