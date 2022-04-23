@@ -5,10 +5,10 @@ if __name__ == '__main__':
     ser.flush()
 
 command = input()
-a = True
-while a:
+
+while True:
     if command==5:
-        ser.write(b"forward\n")
+        ser.write()
     elif command==2:
         ser.write(b"backward\n")
     elif command==3:
