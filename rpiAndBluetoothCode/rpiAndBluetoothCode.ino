@@ -6,6 +6,9 @@ int motor2Pin2 = 5; // pin in4 on L298N
 int enable2Pin = 10; // pin enb on L298N
 //makes sure that the serial only prints once the state
 String command;
+int state;
+int flag=0;        //makes sure that the serial only prints once the state
+int stateStop=0;
 
 void setup() {
     Serial.begin(9600);
@@ -27,65 +30,82 @@ void setup() {
 void loop() {
     //if some date is sent, reads it and saves in state
     if(Serial.available() > 0){     
-
+      state = Serial.read();
+      flag=0;
       command = Serial.readStringUntil('\n');
       command.trim();
-      flag=0;
-    }   
+    }
     // if the state is 'F' the DC motor will go forward
-    if (command.equals("forward")) {
+    if (state == 'F' || command.equals("forward")) {
         digitalWrite(motor1Pin1, HIGH);
         digitalWrite(motor1Pin2, LOW); 
         digitalWrite(motor2Pin1, LOW);
         digitalWrite(motor2Pin2, HIGH);
+        if(flag == 0){
+          Serial.println("Go Forward!");
+          flag=1;
+        }
 
     }
     
     // if the state is 'R' the motor will turn left
-    else if ( command.equals("right")) {
+    else if (state == 'R' || command.equals("right")) {
         digitalWrite(motor1Pin1, HIGH); 
         digitalWrite(motor1Pin2, LOW); 
         digitalWrite(motor2Pin1, LOW);
         digitalWrite(motor2Pin2, LOW);
+        if(flag == 0){
+          Serial.println("Turn LEFT");
+          flag=1;
+        }
 
         delay(5000);
+        state=3;
+        stateStop=1;
 
     }
     // if the state is 'S' the motor will Stop
-    else if ( command.equals("stop")) {
+    else if (state == 'S' || command.equals("stop")) {
         digitalWrite(motor1Pin1, LOW); 
         digitalWrite(motor1Pin2, LOW); 
         digitalWrite(motor2Pin1, LOW);
         digitalWrite(motor2Pin2, LOW);
-
+        if(flag == 0){
+          Serial.println("STOP!");
+          flag=1;
+        }
+        stateStop=0;
     }
     // if the state is 'L' the motor will turn right
-    else if (command.equals("left")) {
+    else if (state == 'L' || command.equals("left")) {
         digitalWrite(motor1Pin1, LOW); 
         digitalWrite(motor1Pin2, LOW); 
         digitalWrite(motor2Pin1, LOW);
         digitalWrite(motor2Pin2, HIGH);
-
+        if(flag == 0){
+          Serial.println("Turn RIGHT");
+          flag=1;
+        }
+        state=3;
+        stateStop=1;
         delay(5000);
 
     }
     // if the state is 'B' the motor will Reverse
-    else if (command.equals("backward")) {
+    else if (state == 'B' || command.equals("backward")) {
         digitalWrite(motor1Pin1, LOW); 
         digitalWrite(motor1Pin2, HIGH);
         digitalWrite(motor2Pin1, HIGH);
         digitalWrite(motor2Pin2, LOW);
+        if(flag == 0){
+          Serial.println("Reverse!");
+          flag=1;
+        }
 
     }
     //For debugging purpose
     //Serial.println(state);
-    else{
-        digitalWrite(motor1Pin1, LOW); 
-        digitalWrite(motor1Pin2, LOW); 
-        digitalWrite(motor2Pin1, LOW);
-        digitalWrite(motor2Pin2, LOW);
 
-    }
   
 
 }
